@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} · Click Seu Mundo Digital{% endblock %}
+
+{% block content %}
+<section class="product-detail">
+    <div class="container product-detail-grid">
+        <div class="product-gallery">
+            <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+        </div>
+        <div class="product-info-panel">
+            <p class="eyebrow">{{ product.category }}</p>
+            <h1>{{ product.name }}</h1>
+            <p class="product-detail-price">{{ ('R$ {:.2f}'.format(product.price)).replace('.', ',') }}</p>
+            <p class="product-detail-description">{{ product.description }}</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post" class="product-detail-form">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <label for="quantity">
+                    Quantidade
+                    <input id="quantity" type="number" name="quantity" min="1" value="1">
+                </label>
+                <button class="btn btn-primary" type="submit">Adicionar ao carrinho</button>
+            </form>
+            <a class="link-back" href="{{ url_for('products_page') }}">← Voltar para o catálogo</a>
+        </div>
+    </div>
+</section>
+
+{% if specs %}
+<section class="product-specs">
+    <div class="container">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Ficha técnica</p>
+                <h2>Detalhes do produto</h2>
+            </div>
+        </div>
+        <div class="spec-grid">
+            {% for block in specs %}
+                <article class="spec-card">
+                    <h3>{{ block.title }}</h3>
+                    <table class="spec-table">
+                        <tbody>
+                            {% for label, value in block.rows %}
+                            <tr>
+                                <th scope="row">{{ label }}</th>
+                                <td>{{ value }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

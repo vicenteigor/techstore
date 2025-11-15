@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Carrinho • Click Seu Mundo Digital{% endblock %}
+
+{% block content %}
+<section class="cart-hero">
+    <div class="container">
+        <p class="eyebrow">Seu carrinho</p>
+        <h1>Revise produtos, cupons e frete</h1>
+        <p>Adicione um cupom, ajuste quantidades e calcule o frete com seu CEP para ver o total final antes de finalizar.</p>
+    </div>
+</section>
+
+<section class="cart-wrapper">
+    <div class="container">
+        {% if feedback %}
+            <div class="cart-feedback cart-feedback-{{ feedback.status }}">
+                <span>{{ feedback.message }}</span>
+            </div>
+        {% endif %}
+
+        {% set cart_items = cart['items'] %}
+        {% set has_items = cart_items|length > 0 %}
+        <div class="cart-grid">
+            <div class="cart-main">
+                {% if has_items %}
+                    <div class="cart-items">
+                        {% for item in cart_items %}
+                            <article class="cart-item">
+                                <div class="cart-item-media">
+                                    <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
+                                </div>
+                                <div class="cart-item-content">
+                                    <div>
+                                        <p class="eyebrow">{{ item.category }}</p>
+                                        <h3>{{ item.name }}</h3>
+                                        <p class="cart-item-price">{{ ('R$ {:.2f}'.format(item.price)).replace('.', ',') }}</p>
+                                    </div>
+                                    <div class="cart-item-actions">
+                                        <form action="{{ url_for('update_cart') }}" method="post" class="cart-form" data-auto-submit="quantity" aria-label="Atualizar quantidade">
+                                            <label for="qty-{{ item.id }}">Quantidade</label>
+                                            <div class="quantity-control">
+                                                <input id="qty-{{ item.id }}" name="quantity" type="number" min="1" value="{{ item.quantity }}">
+                                                <input type="hidden" name="product_id" value="{{ item.id }}">
+                                                <button class="btn btn-ghost" type="submit">Atualizar</button>
+                                            </div>
+                                        </form>
+                                        <form action="{{ url_for('remove_from_cart') }}" method="post" class="cart-form" aria-label="Remover do carrinho">
+                                            <input type="hidden" name="product_id" value="{{ item.id }}">
+                                            <button class="link-button" type="submit">Remover</button>
+                                        </form>
+                                        <div class="cart-item-total">
+                                            <span>Total do item</span>
+                                            <strong>{{ ('R$ {:.2f}'.format(item.line_total)).replace('.', ',') }}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="cart-empty">
+                        <h3>Seu carrinho está vazio</h3>
+                        <p>Adicione produtos para visualizar totais, frete e cupons.</p>
+                        <a class="btn btn-primary" href="{{ url_for('products_page') }}">Voltar para os produtos</a>
+                    </div>
+                {% endif %}
+
+                <div class="cart-utilities">
+                    <article class="cart-card">
+                        <h3>Aplicar cupom</h3>
+                        <form action="{{ url_for('apply_coupon') }}" method="post" class="cart-form">
+                            <label for="coupon">Código</label>
+                            <div class="cart-inline-field">
+                                <input id="coupon" name="coupon" type="text" placeholder="EXEMPLO1" value="{{ cart.coupon.code if cart.coupon }}">
+                                <button class="btn btn-primary" type="submit">Aplicar</button>
+                            </div>
+                        </form>
+                        {% if cart.coupon %}
+                            <form action="{{ url_for('remove_coupon') }}" method="post" class="cart-form cart-form-inline">
+                                <span>Cupom {{ cart.coupon.code }} em uso.</span>
+                                <button class="link-button" type="submit">Remover</button>
+                            </form>
+                            <p class="cart-hint">Você economizou {{ ('R$ {:.2f}'.format(cart.savings)).replace('.', ',') }} com cupons.</p>
+                        {% else %}
+                            <p class="cart-hint">Use o cupom <strong>EXEMPLO1</strong> para ganhar 10% de desconto.</p>
+                        {% endif %}
+                    </article>
+
+                    <article class="cart-card">
+                        <h3>Calcular frete</h3>
+                        <form action="{{ url_for('calculate_shipping') }}" method="post" class="cart-form">
+                            <label for="cep">CEP</label>
+                            <div class="cart-inline-field">
+                                <input id="cep" name="cep" type="text" placeholder="00000-000" value="{{ cart.shipping.cep if cart.shipping }}">
+                                <button class="btn btn-primary" type="submit">Calcular</button>
+                            </div>
+                        </form>
+                        {% if cart.shipping %}
+                            <p class="cart-hint">Entrega estimada em {{ cart.shipping.eta }} — frete de {{ ('R$ {:.2f}'.format(cart.shipping_cost)).replace('.', ',') }}.</p>
+                        {% else %}
+                            <p class="cart-hint">Informe seu CEP para calcular prazo e valor.</p>
+                        {% endif %}
+                    </article>
+                </div>
+            </div>
+
+            <aside class="cart-summary">
+                <div class="cart-card">
+                    <h3>Resumo</h3>
+                    <ul class="cart-summary-list">
+                        <li>
+                            <span>Subtotal</span>
+                            <strong>{{ ('R$ {:.2f}'.format(cart.subtotal)).replace('.', ',') }}</strong>
+                        </li>
+                        <li>
+                            <span>Frete</span>
+                            {% if cart.shipping %}
+                                <strong>{{ ('R$ {:.2f}'.format(cart.shipping_cost)).replace('.', ',') }}</strong>
+                            {% else %}
+                                <strong>Calcule o frete</strong>
+                            {% endif %}
+                        </li>
+                        {% if cart.discount %}
+                            <li>
+                                <span>Descontos</span>
+                                <strong class="cart-discount">-{{ ('R$ {:.2f}'.format(cart.discount)).replace('.', ',') }}</strong>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <div class="cart-total">
+                        <span>Total</span>
+                        <strong>{{ ('R$ {:.2f}'.format(cart.total)).replace('.', ',') }}</strong>
+                    </div>
+                    {% if cart.savings %}
+                        <p class="cart-hint">Economia total: {{ ('R$ {:.2f}'.format(cart.savings)).replace('.', ',') }}</p>
+                    {% endif %}
+                    <button class="btn btn-primary" type="button" {% if not has_items %}disabled{% endif %}>Finalizar compra</button>
+                    <p class="cart-note">Checkout indisponível neste protótipo.</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
