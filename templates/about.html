@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Sobre nós · Click Seu Mundo Digital{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container page-hero-grid">
+        <div>
+            <p class="eyebrow">Desde 2017</p>
+            <h1>Construímos setups reais para pessoas reais</h1>
+            <p>Somos uma curadoria independente de tecnologia. Testamos cada periférico, negociamos diretamente com fabricantes e acompanhamos você após a compra.</p>
+        </div>
+        <ul class="stats-grid">
+            <li>
+                <strong>2.500+</strong>
+                <span>Clientes atendidos no Brasil</span>
+            </li>
+            <li>
+                <strong>72h</strong>
+                <span>Tempo médio de resolução no suporte</span>
+            </li>
+            <li>
+                <strong>35</strong>
+                <span>Marcas parceiras homologadas</span>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section class="values">
+    <div class="container">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Nosso manifesto</p>
+                <h2>Três pilares que sustentam a Click</h2>
+            </div>
+        </div>
+        <div class="value-grid">
+            <article>
+                <h3>Curadoria radical</h3>
+                <p>Não vendemos todo lançamento — só o que passa pelo nosso laboratório e entrega confiabilidade, ergonomia e suporte local.</p>
+            </article>
+            <article>
+                <h3>Experiência humana</h3>
+                <p>Toda compra rende acompanhamento individual por chat, vídeo ou telefone durante os primeiros 30 dias de uso.</p>
+            </article>
+            <article>
+                <h3>Transparência</h3>
+                <p>Compartilhamos fichas técnicas completas e conteúdos educativos para que você compre com clareza e zero hype.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="timeline">
+    <div class="container">
+        <p class="eyebrow">Nossa jornada</p>
+        <h2>Marcos que moldaram a loja</h2>
+        <ol class="timeline-list">
+            <li>
+                <span class="year">2017</span>
+                <div>
+                    <h3>Primeiros setups sob medida</h3>
+                    <p>Nascemos atendendo streamers e escritórios em casa, importando periféricos selecionados em lotes pequenos.</p>
+                </div>
+            </li>
+            <li>
+                <span class="year">2019</span>
+                <div>
+                    <h3>Laboratório próprio</h3>
+                    <p>Montamos um estúdio para testes de durabilidade e ergonomia. A partir daí, nenhum item entra no catálogo sem passar por validação prática.</p>
+                </div>
+            </li>
+            <li>
+                <span class="year">2022</span>
+                <div>
+                    <h3>Operação nacional</h3>
+                    <p>Firmamos acordos com marcas como Redragon, JBL e Gama Italy para garantir estoque local, nota fiscal brasileira e garantia oficial.</p>
+                </div>
+            </li>
+        </ol>
+    </div>
+</section>
+
+<section class="team">
+    <div class="container team-grid">
+        <div>
+            <p class="eyebrow">Quem está por trás</p>
+            <h2>Especialistas em performance e atendimento</h2>
+            <p>Somos uma equipe híbrida de product geeks, gamers, engenheiros de som e consultores de atendimento. Misturamos obsessão por especificações com cuidado genuíno.</p>
+            <ul class="story-list">
+                <li>Equipe certificada por fabricantes parceiros</li>
+                <li>Suporte multicanal (chat, WhatsApp, vídeo)</li>
+                <li>Eventos e workshops mensais com clientes</li>
+            </ul>
+        </div>
+        <div class="team-card">
+            <p class="eyebrow">Laboratório aberto</p>
+            <h3>Visite nosso estúdio em Santa Maria de Jetibá e teste qualquer equipamento antes de comprar.</h3>
+            <a class="btn btn-primary" href="{{ url_for('contact') }}">Agendar visita</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

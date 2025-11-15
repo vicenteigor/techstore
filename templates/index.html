@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% set products = products_list or [] %}
+    {% set featured_product = products[0] if products else None %}
+    {% set categories = products | map(attribute='category') | list %}
+
+    <section class="hero" id="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <p class="eyebrow">Nova temporada 2025</p>
+                <h1>Hardware curado para quem vive tecnologia</h1>
+                <p>Selecionamos periféricos, áudio e acessórios premium com um único objetivo: entregar desempenho com estilo e suporte local.</p>
+                <div class="hero-actions">
+                    <a href="{{ url_for('products_page') }}" class="btn btn-primary">Explorar catálogo</a>
+                    <a href="{{ url_for('about') }}" class="btn btn-ghost">Conheça nossa história</a>
+                </div>
+                <ul class="hero-pillars">
+                    <li><span>Envio em 24h</span></li>
+                    <li><span>Garantia oficial</span></li>
+                    <li><span>Atendimento humano</span></li>
+                </ul>
+            </div>
+            {% if featured_product %}
+            <div class="hero-card">
+                <p class="eyebrow">Destaque da semana</p>
+                <h3>{{ featured_product.name }}</h3>
+                <p>{{ featured_product.description[:140] }}{% if featured_product.description|length > 140 %}...{% endif %}</p>
+                <div class="hero-card-footer">
+                    <div>
+                        <span class="label">Categoria</span>
+                        <strong>{{ featured_product.category }}</strong>
+                    </div>
+                    <div>
+                        <span class="label">Valor</span>
+                        <strong>{{ ('R$ {:.2f}'.format(featured_product.price)).replace('.', ',') }}</strong>
+                    </div>
+                </div>
+                <img src="{{ url_for('static', filename=featured_product.image) }}" alt="{{ featured_product.name }}">
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="products-section" id="featured">
+        <div class="container">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Lançamentos e best-sellers</p>
+                    <h2>Escolha por categoria</h2>
+                </div>
+                <div class="filter-chips" role="tablist">
+                    <button class="chip active" data-filter="all" type="button">Tudo</button>
+                    {% for category in categories | unique %}
+                        <button class="chip" data-filter="{{ category }}" type="button">{{ category }}</button>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="products-grid">
+                {% for product in products %}
+                    <article class="product-card" data-category="{{ product.category }}">
+                        <a class="product-card-link" href="{{ url_for('product_detail', product_id=product.id) }}">
+                            <div class="product-badge">{{ product.category }}</div>
+                            <div class="product-image">
+                                <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+                            </div>
+                            <div class="product-info">
+                                <h3>{{ product.name }}</h3>
+                                <p>{{ product.description[:120] }}{% if product.description|length > 120 %}...{% endif %}</p>
+                            </div>
+                        </a>
+                        <div class="product-meta">
+                            <span class="price">{{ ('R$ {:.2f}'.format(product.price)).replace('.', ',') }}</span>
+                            <button class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}">Adicionar</button>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits">
+        <div class="container benefits-grid">
+            <article>
+                <i class="fas fa-shipping-fast"></i>
+                <h3>Despacho rápido</h3>
+                <p>Pedidos confirmados até 15h saem no mesmo dia com rastreamento em tempo real.</p>
+            </article>
+            <article>
+                <i class="fas fa-shield-alt"></i>
+                <h3>Garantia estendida</h3>
+                <p>Até 12 meses de cobertura com suporte especializado e troca expressa.</p>
+            </article>
+            <article>
+                <i class="fas fa-headset"></i>
+                <h3>Consultoria gratuita</h3>
+                <p>Especialistas ajudam a montar o setup perfeito para streaming, estudos ou escritório.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="story">
+        <div class="container story-grid">
+            <div>
+                <p class="eyebrow">Nossa missão</p>
+                <p>Nossa missão é proporcionar uma experiência completa em tecnologia, oferecendo produtos digitais, periféricos, equipamentos de informática e telefonia com qualidade, confiança e preço justo. Trabalhamos para expandir nossa presença online e tornar o processo de compra cada vez mais rápido, prático e acessível. Como empresa com 15 anos de atuação em Santa Maria de Jetibá – ES, buscamos unir inovação e atendimento personalizado para entregar soluções que realmente façam diferença no dia a dia dos nossos clientes.</p>
+                <a href="{{ url_for('about') }}" class="btn btn-ghost">Ver bastidores</a>
+            </div>
+            <div class="story-card">
+                <p class="eyebrow">Reviews reais</p>
+                <blockquote>
+                    “Recebi meu setup completo em dois dias. Atendimento impecável e suporte pós-compra que realmente resolve.”
+                </blockquote>
+                <p class="author">Mariana Lopes — Streamer</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter-cta">
+        <div class="container newsletter-inner">
+            <div>
+                <p class="eyebrow">Clube Insider</p>
+                <h2>Ganhe alertas de reposição e cupons exclusivos</h2>
+            </div>
+            <form class="newsletter-form">
+                <label class="sr-only" for="newsletter-inline-email">E-mail</label>
+                <input id="newsletter-inline-email" type="email" placeholder="nome@email.com">
+                <button type="submit" class="btn btn-primary">Quero fazer parte</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

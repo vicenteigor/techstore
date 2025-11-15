@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Contato · Click Seu Mundo Digital{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container page-hero-grid">
+        <div>
+            <p class="eyebrow">Atendimento humano</p>
+            <h1>Fale com quem entende do seu setup</h1>
+            <p>Nossa equipe está em Santa Maria de Jetibá — ES e há 15 anos atende clientes oferecendo tecnologia com confiança, preço justo e suporte próximo.</p>
+        </div>
+    </div>
+</section>
+
+<section class="contact-section">
+    <div class="container contact-grid">
+        <form class="contact-form">
+            <p class="eyebrow">Envie uma mensagem</p>
+            <label>
+                <span>Nome completo</span>
+                <input type="text" name="name" placeholder="Seu nome" required>
+            </label>
+            <label>
+                <span>E-mail</span>
+                <input type="email" name="email" placeholder="voce@email.com" required>
+            </label>
+            <label>
+                <span>Assunto</span>
+                <select name="topic" required>
+                    <option value="">Selecione</option>
+                    <option value="consultoria">Consultoria de compra</option>
+                    <option value="suporte">Suporte pós-venda</option>
+                    <option value="parcerias">Parcerias e imprensa</option>
+                </select>
+            </label>
+            <label>
+                <span>Mensagem</span>
+                <textarea name="message" rows="4" placeholder="Conte como podemos ajudar" required></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary">Enviar mensagem</button>
+        </form>
+
+        <div class="contact-card">
+            <p class="eyebrow">Onde estamos</p>
+            <h3>Click Seu Mundo Digital · Santa Maria de Jetibá — ES</h3>
+            <ul>
+                <li>Rua: Av. Frederico Grulke, Nº 866, Loja A</li>
+                <li>CEP 29.645-000 · Bairro Centro</li>
+                <li>Atendimento presencial mediante disponibilidade</li>
+            </ul>
+            <p class="eyebrow">Canais diretos</p>
+            <ul>
+                <li>Telefone: 27 3263-1861</li>
+                <li>WhatsApp: 27 99785-9573</li>
+                <li>E-mail: click.gamer.smaria@gmail.com</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="faq">
+    <div class="container">
+        <p class="eyebrow">FAQ rápido</p>
+        <div class="faq-grid">
+            <article>
+                <h3>Qual o prazo de entrega?</h3>
+                <p>Pedidos confirmados até 15h são postados no mesmo dia. Capitais recebem em 2 a 4 dias úteis.</p>
+            </article>
+            <article>
+                <h3>Posso testar antes de comprar?</h3>
+                <p>Sim! Nosso estúdio em São Paulo tem estações montadas para teclado, áudio e acessórios.</p>
+            </article>
+            <article>
+                <h3>Como funciona a garantia?</h3>
+                <p>Garantia oficial do fabricante + cobertura adicional de 30 dias com troca expressa via Click.</p>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
